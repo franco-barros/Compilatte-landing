@@ -1,5 +1,7 @@
+@import url("/devicon/devicon.min.css");
 @import "tailwindcss";
 
+/* Otras reglas de estilo */
 :root {
   --background: #ffffff;
   --foreground: #171717;
