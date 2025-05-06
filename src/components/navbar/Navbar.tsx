@@ -7,11 +7,18 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const navLinks = [
-    { href: "#about", label: "Sobre nosotros" },
-    { href: "#solutions", label: "Soluciones" },
-    { href: "#worked", label: "Trabajos" },
-    { href: "#contact", label: "Contacto" },
+    { href: "about", label: "Sobre nosotros" },
+    { href: "solutions", label: "Soluciones" },
+    { href: "worked", label: "Trabajos" },
+    { href: "contact", label: "Contacto" },
   ];
+
+  const scrollToSection = (id: string) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <nav
@@ -19,8 +26,11 @@ const Navbar = () => {
                  flex items-center px-4 md:px-6 rounded-full bg-white shadow-md z-[1001] transition-all duration-300"
     >
       <div className="w-full flex justify-between items-center h-full">
-        {/* Logo con imagen */}
-        <a href="#hero" className="flex items-center gap-2">
+        {/* Logo con scroll suave */}
+        <button
+          onClick={() => scrollToSection("hero")}
+          className="flex items-center gap-2 focus:outline-none"
+        >
           <Image
             src="/icono.png"
             alt="Logo"
@@ -30,18 +40,18 @@ const Navbar = () => {
             priority
           />
           <span className="text-lg font-bold text-gray-900"></span>
-        </a>
+        </button>
 
-        {/* Menú de escritorio */}
+        {/* Menú escritorio */}
         <ul className="hidden md:flex items-center gap-6">
           {navLinks.map(({ href, label }) => (
             <li key={href}>
-              <a
-                href={href}
+              <button
+                onClick={() => scrollToSection(href)}
                 className="font-medium text-gray-700 hover:text-blue-600 transition-colors"
               >
                 {label}
-              </a>
+              </button>
             </li>
           ))}
         </ul>
@@ -63,13 +73,15 @@ const Navbar = () => {
           <ul className="flex flex-col gap-4">
             {navLinks.map(({ href, label }) => (
               <li key={href}>
-                <a
-                  href={href}
-                  onClick={() => setIsOpen(false)}
+                <button
+                  onClick={() => {
+                    scrollToSection(href);
+                    setIsOpen(false);
+                  }}
                   className="block font-medium text-gray-700 hover:text-blue-600"
                 >
                   {label}
-                </a>
+                </button>
               </li>
             ))}
           </ul>

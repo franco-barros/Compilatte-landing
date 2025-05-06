@@ -16,10 +16,29 @@ const ContactUs = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Formulario enviado:", form);
-    // Aca tenemos que usar fetch o axios para enviar los datos a tu API
+
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+
+      if (res.ok) {
+        alert("Mensaje enviado con éxito.");
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        const { error } = await res.json();
+        alert("Error al enviar mensaje: " + (error || "Intenta más tarde."));
+      }
+    } catch (err) {
+      alert("Error de red. Intenta más tarde.");
+      console.error("Error al enviar mensaje:", err);
+    }
   };
 
   return (
@@ -35,7 +54,7 @@ const ContactUs = () => {
             onChange={handleChange}
             placeholder="Tu nombre"
             required
-            className="w-full p-4 border border-gray-300 rounded-md"
+            className="w-full p-4 border border-green-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400"
           />
 
           <input
@@ -45,7 +64,7 @@ const ContactUs = () => {
             onChange={handleChange}
             placeholder="Tu email"
             required
-            className="w-full p-4 border border-gray-300 rounded-md"
+            className="w-full p-4 border border-green-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400"
           />
 
           <textarea
@@ -55,12 +74,12 @@ const ContactUs = () => {
             placeholder="Tu mensaje"
             rows={5}
             required
-            className="w-full p-4 border border-gray-300 rounded-md"
+            className="w-full p-4 border border-green-300 rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-green-400"
           />
 
           <button
             type="submit"
-            className="w-full bg-cyan-600 text-white py-3 rounded-md hover:bg-cyan-700 transition"
+            className="w-full bg-green-600 text-white py-3 rounded-full hover:bg-green-700 transition font-semibold shadow-md"
           >
             Enviar mensaje
           </button>
